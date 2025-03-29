@@ -14,6 +14,8 @@ const btnHold = document.querySelector(".btn--hold");
 const btnNewGame = document.querySelector(".btn--new");
 const diceEl = document.querySelector(".dice");
 
+let playing,currentScore,activePlayer,scores;
+
 const init = function(){
   playing = true;
   currentScore = 0;
@@ -24,21 +26,18 @@ const init = function(){
   score1El.textContent = 0;
   current0El.textContent = 0;
   current1El.textContent = 0;
+
   diceEl.classList.add("hidden");
   player0El.classList.remove('player--winner');
   player1El.classList.remove('player--winner');
   player0El.classList.add('player--active');
   player1El.classList.remove('player--active');
-}
-//starting condition
-score0El.textContent = 0;
-score1El.textContent = 0;
-diceEl.classList.add("hidden");
-let playing = true;
 
-let currentScore = 0;
-let activePlayer = 0;
-let scores = [0, 0];
+  // Stop any active animations (confetti, etc.)
+  const confettiElements = document.querySelectorAll(".confetti");
+  confettiElements.forEach(confetti => confetti.remove());
+}
+init();
 
 const switchPlayer = function () {
   document.getElementById(`current--${activePlayer}`).textContent = 0;
@@ -78,8 +77,10 @@ btnHold.addEventListener("click", function () {
     document.getElementById(`score--${activePlayer}`).textContent =
       scores[activePlayer];
 
-    // 2. Check if player's score is >= 100
+    // 2. Check if player's score is >= 50
     if (scores[activePlayer] >= 50) {
+      document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer] +
+      " - Winner🥇";
       playing =false;
       diceEl.classList.add("hidden");
       document
@@ -88,6 +89,9 @@ btnHold.addEventListener("click", function () {
       document
         .querySelector(`.player--${activePlayer}`)
         .classList.remove("player--active");
+      // Trigger confetti when a player wins
+      createConfetti(document.querySelector(`.player--${activePlayer}`));
+      
     } else {
       // Switch to the next player
       switchPlayer();
@@ -96,3 +100,18 @@ btnHold.addEventListener("click", function () {
 });
 
 btnNewGame.addEventListener('click',init);
+
+// Function to create confetti effect
+const createConfetti = (playerElement) => {
+  // Create multiple confetti elements
+  for (let i = 0; i < 30; i++) {
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+    playerElement.appendChild(confetti);
+
+    // Set random positions for each confetti particle
+    const randomLeft = Math.random() * 100;
+    confetti.style.left = `${randomLeft}%`;
+    confetti.style.animationDelay = `${Math.random() * 2}s`; // Random delay for different fall timings
+  }
+};

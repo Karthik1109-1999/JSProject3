@@ -160,11 +160,68 @@ main {
   display: none;
 }
 
-.player--winner {
-  background-color: #2f2f2f;
-}
-
 .player--winner .name {
   font-weight: 700;
   color: #c7365f;
 }
+
+/* Winner styling */
+.player--winner {
+  background-color: #70e36ada; /* Dark background for the winner */
+  border: 5px solid gold; /* Golden border to highlight the winner */
+  color: white; /* White text color */
+  position: relative; /* To position confetti and effects */
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(255, 223, 0, 0.8); /* Glowing effect around the winner */
+  animation: winnerAnimation 2s ease-in-out forwards;
+}
+
+/* Animation for winner background */
+@keyframes winnerAnimation {
+  0% {
+    background-color: #70e36ada;;
+  }
+  50% {
+    background-color: #ffcc00; /* Gold color to show "winner" */
+  }
+  100% {
+    background-color: #7cd46e;
+  }
+}
+
+/* Confetti particles styling */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #ff4d4d;
+  border-radius: 50%;
+  animation: confettiAnimation 2s ease-in-out infinite;
+}
+
+/* Create different colors for confetti */
+.confetti:nth-child(odd) {
+  background-color: #ffcc00;
+}
+
+.confetti:nth-child(even) {
+  background-color: #33cc33;
+}
+
+/* Animation for confetti falling down and exploding */
+@keyframes confettiAnimation {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(200px) rotate(180deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(400px) rotate(360deg);
+  }
+}
+
+
